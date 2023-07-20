@@ -1,0 +1,65 @@
+import tkinter as tk
+from tkinter import messagebox
+
+menu = {}
+
+def add_item():
+    name = item_name_entry.get()
+    price = item_price_entry.get()
+    if name and price:
+        menu[name] = float(price)
+        item_name_entry.delete(0, tk.END)
+        item_price_entry.delete(0, tk.END)
+        messagebox.showinfo("Success", f"{name} has been added to the menu.")
+    else:
+        messagebox.showerror("Error", "Please enter both name and price.")
+
+def view_menu():
+    if menu:
+        menu_text.config(state=tk.NORMAL)
+        menu_text.delete(1.0, tk.END)
+        for name, price in menu.items():
+            menu_text.insert(tk.END, f"{name}: ${price}\n")
+        menu_text.config(state=tk.DISABLED)
+    else:
+        messagebox.showinfo("Empty Menu", "The menu is currently empty.")
+
+def clear_menu():
+    menu.clear()
+    menu_text.config(state=tk.NORMAL)
+    menu_text.delete(1.0, tk.END)
+    menu_text.config(state=tk.DISABLED)
+    messagebox.showinfo("Cleared Menu", "The menu has been cleared.")
+
+def create_menu_editor():
+    root = tk.Tk()
+    root.title("Menu Editor")
+
+    label_name = tk.Label(root, text="Item Name:")
+    label_name.pack()
+
+    item_name_entry = tk.Entry(root)
+    item_name_entry.pack()
+
+    label_price = tk.Label(root, text="Item Price:")
+    label_price.pack()
+
+    item_price_entry = tk.Entry(root)
+    item_price_entry.pack()
+
+    add_button = tk.Button(root, text="Add Item", command=add_item)
+    add_button.pack()
+
+    view_button = tk.Button(root, text="View Menu", command=view_menu)
+    view_button.pack()
+
+    clear_button = tk.Button(root, text="Clear Menu", command=clear_menu)
+    clear_button.pack()
+
+    menu_text = tk.Text(root, height=10, width=30, state=tk.DISABLED)
+    menu_text.pack()
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    create_menu_editor()
